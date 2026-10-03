@@ -11,6 +11,8 @@ import { showToast } from './utils/toast';
 
 // View Renderers
 import { renderDashboardView, initDashboardCharts } from './views/dashboard';
+import { renderPOSView, initPOSEventListeners } from './views/pos';
+import { renderLoyaltyView, initLoyaltyEventListeners } from './views/loyalty';
 import { renderProductsView, initProductsEventListeners } from './views/products';
 import { renderOrdersView, initOrdersEventListeners, openOrderDetailModal } from './views/orders';
 import { renderCustomersView, initCustomersEventListeners, openCustomerProfileModal } from './views/customers';
@@ -46,6 +48,20 @@ function renderApp() {
   ) {
     appContainer.innerHTML = renderAuthView(currentView);
     initAuthEventListeners();
+    attachGlobalNavLinks();
+    return;
+  }
+
+  // POS Fullscreen / Kiosk Mode: Hide all admin chrome, 100% viewport to POS terminal
+  if (currentView === 'pos' && state.posFullscreen) {
+    appContainer.innerHTML = `
+      <div class="h-screen w-screen overflow-hidden bg-background text-text transition-colors">
+        <main id="app-main-content" class="w-full h-full overflow-hidden">
+          ${renderPOSView()}
+        </main>
+      </div>
+    `;
+    initPOSEventListeners();
     attachGlobalNavLinks();
     return;
   }
@@ -98,6 +114,10 @@ function renderCurrentViewContent(view: ViewType): string {
   switch (view) {
     case 'dashboard':
       return renderDashboardView();
+    case 'pos':
+      return renderPOSView();
+    case 'loyalty':
+      return renderLoyaltyView();
     case 'products':
     case 'product-form':
       return renderProductsView();
@@ -151,6 +171,12 @@ function initCurrentViewEvents(view: ViewType) {
         const dd = document.getElementById('topbar-client-dropdown');
         dd?.classList.toggle('hidden');
       });
+      break;
+    case 'pos':
+      initPOSEventListeners();
+      break;
+    case 'loyalty':
+      initLoyaltyEventListeners();
       break;
     case 'products':
       initProductsEventListeners();

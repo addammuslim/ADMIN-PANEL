@@ -505,3 +505,34 @@ body {
   }
 }
 
+/* POS & UI Utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Thermal Receipt Print Stylesheet */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #thermal-receipt-paper, #thermal-receipt-paper * {
+    visibility: visible;
+  }
+  #thermal-receipt-paper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    max-width: 80mm !important;
+    margin: 0 !important;
+    padding: 8px !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+

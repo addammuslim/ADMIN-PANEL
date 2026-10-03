@@ -1242,3 +1242,257 @@ export const MOCK_FAQS: FAQItem[] = [
     order: 3
   }
 ];
+
+// ============================================================================
+// MOKA POS & TIERED LOYALTY SYSTEM DATA
+// ============================================================================
+
+export interface PosCartItem {
+  product: Product;
+  quantity: number;
+  notes?: string;
+  discount?: number;
+}
+
+export interface HeldOrder {
+  id: string;
+  orderNumber: string;
+  customerName: string;
+  customerPhone?: string;
+  orderType: 'dine-in' | 'take-away' | 'delivery';
+  tableNumber?: string;
+  items: PosCartItem[];
+  subtotal: number;
+  discount: number;
+  tax: number;
+  total: number;
+  timestamp: string;
+}
+
+export interface LoyaltyTier {
+  id: string;
+  name: 'Bronze' | 'Silver' | 'Gold' | 'Platinum';
+  minSpend: number;
+  multiplier: number;
+  badgeColor: string;
+  badgeBg: string;
+  borderClass: string;
+  description: string;
+  perks: string[];
+  membersCount: number;
+}
+
+export interface LoyaltyReward {
+  id: string;
+  title: string;
+  pointsCost: number;
+  category: 'voucher' | 'product' | 'shipping' | 'special';
+  discountAmount: number;
+  description: string;
+  claimedCount: number;
+  stock: number;
+  active: boolean;
+}
+
+export interface LoyaltyRules {
+  spendPerPoint: number;
+  pointValueInRupiah: number;
+  pointExpiryMonths: number;
+  tierEvaluationMonths: number;
+  allowRedeemInPos: boolean;
+}
+
+export const MOCK_LOYALTY_TIERS: LoyaltyTier[] = [
+  {
+    id: 'tier-bronze',
+    name: 'Bronze',
+    minSpend: 0,
+    multiplier: 1.0,
+    badgeColor: 'text-amber-700 dark:text-amber-400',
+    badgeBg: 'bg-amber-100 dark:bg-amber-950/60',
+    borderClass: 'border-amber-300 dark:border-amber-800',
+    description: 'Tier awal otomatis untuk setiap pelanggan terdaftar baru',
+    perks: [
+      '1 Poin untuk setiap kelipatan Rp 10.000 belanja',
+      'Akses promo seasonal & diskon member awal',
+      'Pemberitahuan produk baru via WhatsApp / Email'
+    ],
+    membersCount: 480
+  },
+  {
+    id: 'tier-silver',
+    name: 'Silver',
+    minSpend: 1000000,
+    multiplier: 1.25,
+    badgeColor: 'text-slate-700 dark:text-slate-300',
+    badgeBg: 'bg-slate-200 dark:bg-slate-800',
+    borderClass: 'border-slate-300 dark:border-slate-700',
+    description: 'Pelanggan aktif dengan pembelanjaan akumulasi > Rp 1.000.000',
+    perks: [
+      '1.25x Poin Loyalty multiplier (+25% bonus poin)',
+      'Voucher Spesial Ulang Tahun diskon 5%',
+      'Prioritas pemrosesan pesanan online & POS',
+      'Undangan private sale pre-launch'
+    ],
+    membersCount: 290
+  },
+  {
+    id: 'tier-gold',
+    name: 'Gold',
+    minSpend: 5000000,
+    multiplier: 1.5,
+    badgeColor: 'text-amber-600 dark:text-amber-300',
+    badgeBg: 'bg-amber-500/15 dark:bg-amber-500/20',
+    borderClass: 'border-amber-400 dark:border-amber-600',
+    description: 'Pelanggan setia dengan belanja tahunan > Rp 5.000.000',
+    perks: [
+      '1.5x Poin Loyalty multiplier (+50% bonus poin)',
+      'Gratis Ongkir ekspedisi reguler tanpa minimal belanja',
+      'Voucher Ulang Tahun diskon 10% + Gift Sample Premium',
+      'Fast-track antrean kasir POS & customer support WhatsApp'
+    ],
+    membersCount: 125
+  },
+  {
+    id: 'tier-platinum',
+    name: 'Platinum',
+    minSpend: 15000000,
+    multiplier: 2.0,
+    badgeColor: 'text-violet-600 dark:text-violet-300',
+    badgeBg: 'bg-violet-500/15 dark:bg-violet-500/20',
+    borderClass: 'border-violet-400 dark:border-violet-600',
+    description: 'Kolektor VIP eksklusif dengan belanja akumulasi > Rp 15.000.000',
+    perks: [
+      '2.0x Double Loyalty Points untuk semua transaksi POS & Web',
+      'Personal VIP Concierge & Personal Shopper Dedicated',
+      'Gratis Ongkir Instant / Same-Day Express tanpa batas',
+      'Diskon permanen 15% untuk layanan offline & private lounge access',
+      'Exclusive Anniversary Luxury Hampers per tahun'
+    ],
+    membersCount: 45
+  }
+];
+
+export const MOCK_LOYALTY_REWARDS: LoyaltyReward[] = [
+  {
+    id: 'rew-01',
+    title: 'Voucher Diskon Rp 25.000',
+    pointsCost: 250,
+    category: 'voucher',
+    discountAmount: 25000,
+    description: 'Potongan langsung Rp 25.000 pada transaksi kasir POS atau checkout online.',
+    claimedCount: 342,
+    stock: 999,
+    active: true
+  },
+  {
+    id: 'rew-02',
+    title: 'Voucher Diskon Rp 50.000',
+    pointsCost: 500,
+    category: 'voucher',
+    discountAmount: 50000,
+    description: 'Potongan langsung Rp 50.000 dengan minimal pembelanjaan Rp 200.000.',
+    claimedCount: 198,
+    stock: 999,
+    active: true
+  },
+  {
+    id: 'rew-03',
+    title: 'Free Rosewater Essence Toner 200ml',
+    pointsCost: 1200,
+    category: 'product',
+    discountAmount: 210000,
+    description: 'Klaim 1 botol penuh Rosewater Toner gratis untuk ditambahkan ke struk pesanan.',
+    claimedCount: 84,
+    stock: 45,
+    active: true
+  },
+  {
+    id: 'rew-04',
+    title: 'Gratis Biaya Pengiriman Instant',
+    pointsCost: 150,
+    category: 'shipping',
+    discountAmount: 30000,
+    description: 'Gratis ongkir kurir Instant Grab/Gojek hingga maksimal subsidi Rp 30.000.',
+    claimedCount: 220,
+    stock: 500,
+    active: true
+  },
+  {
+    id: 'rew-05',
+    title: 'VIP Exclusive Beauty Box Trial Kit',
+    pointsCost: 2500,
+    category: 'special',
+    discountAmount: 450000,
+    description: 'Paket box eksklusif 5 item ukuran travel dalam kemasan beludru mewah.',
+    claimedCount: 28,
+    stock: 15,
+    active: true
+  }
+];
+
+export const MOCK_LOYALTY_RULES: LoyaltyRules = {
+  spendPerPoint: 10000,
+  pointValueInRupiah: 100,
+  pointExpiryMonths: 12,
+  tierEvaluationMonths: 12,
+  allowRedeemInPos: true
+};
+
+export const MOCK_HELD_ORDERS: HeldOrder[] = [
+  {
+    id: 'hold-01',
+    orderNumber: 'POS-HLD-001',
+    customerName: 'Jessica Tanuwijaya (Platinum)',
+    customerPhone: '+62 811-9283-0011',
+    orderType: 'dine-in',
+    tableNumber: 'Meja 04',
+    items: [
+      {
+        product: {
+          id: 'prod-001',
+          name: 'Retinol Peptide Renewal Serum 30ml',
+          sku: 'AUR-SER-001',
+          category: 'Face Treatment',
+          price: 299000,
+          costPrice: 110000,
+          stock: 142,
+          lowStockThreshold: 20,
+          status: 'In Stock',
+          image: '/src/assets/images/skincare_serum_1791012233742.jpg',
+          soldCount: 1240,
+          featured: true,
+          bestseller: true,
+          createdDate: '2026-08-12'
+        },
+        quantity: 2,
+        notes: 'Minta gift bag kardus pita'
+      },
+      {
+        product: {
+          id: 'prod-002',
+          name: 'Ceramide Barrier Relief Cream 50g',
+          sku: 'AUR-CRM-002',
+          category: 'Moisturizer',
+          price: 249000,
+          costPrice: 85000,
+          stock: 88,
+          lowStockThreshold: 15,
+          status: 'In Stock',
+          image: '/src/assets/images/skincare_serum_1791012233742.jpg',
+          soldCount: 960,
+          featured: true,
+          bestseller: true,
+          createdDate: '2026-08-14'
+        },
+        quantity: 1
+      }
+    ],
+    subtotal: 847000,
+    discount: 0,
+    tax: 93170,
+    total: 940170,
+    timestamp: '10:24'
+  }
+];
+
