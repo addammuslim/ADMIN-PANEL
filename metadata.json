@@ -1,0 +1,6 @@
+{
+  "name": "AuraMaster - Reusable Master Admin Panel Template",
+  "description": "ThemeForest-grade reusable master admin dashboard template with modern SaaS UI, modular pages, customizable theme engine, and PHP/MySQLi integration readiness.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
